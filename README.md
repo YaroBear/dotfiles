@@ -24,6 +24,8 @@ $ config config status.showUntrackedFiles no
 | ----- | -------------- | ------ | ------------- | -------- |
 | bash  | sway           | neovim | urxvt-unicode | i3status |
 
+![screenshot](https://raw.githubusercontent.com/YaroBear/dotfiles/master/screen.png)
+
 ### Desktop
 
 | Shell | Window Manager | Editor | Terminal | Monitor |
