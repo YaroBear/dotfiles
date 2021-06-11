@@ -11,7 +11,7 @@ set undofile
 call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
-"Plug 'OmniSharp/omnisharp-vim'
+Plug 'OmniSharp/omnisharp-vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -32,6 +32,7 @@ Plug 'prettier/vim-prettier', {
     \ 'lua',
     \ 'python',
     \ 'html' ] }
+Plug 'prabirshrestha/asyncomplete-emmet.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -42,6 +43,11 @@ call asyncomplete#register_source(asyncomplete#sources#tscompletejob#get_source_
     \ 'completor': function('asyncomplete#sources#tscompletejob#completor'),
     \ }))
 
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#emmet#get_source_options({
+    \ 'name': 'emmet',
+    \ 'whitelist': ['html'],
+    \ 'completor': function('asynccomplete#sources#emmet#completor'),
+    \ }))
 
 if executable('typescript-language-server')
     au User lsp_setup call lsp#register_server({
@@ -60,14 +66,24 @@ if executable('css-languageserver')
         \ })
 endif
 
-if executable('rls')
+if executable('html-languageserver')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        \ 'whitelist': ['rust'],
+        \ 'name': 'html-languageserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'html-languageserver --stdio']},
+        \ 'whitelist': ['html'],
         \ })
 endif
 
+if executable('rust-analyzer')
+  au User lsp_setup call lsp#register_server({
+        \   'name': 'Rust Language Server',
+        \   'cmd': {server_info->['rust-analyzer']},
+        \   'whitelist': ['rust'],
+        \ })
+endif
+
+
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
+
+let g:asyncomplete_auto_popup = 1
