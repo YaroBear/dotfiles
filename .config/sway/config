@@ -15,7 +15,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term urxvt 
+set $term alacritty
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 set $menu dmenu_path | dmenu | xargs swaymsg exec --
@@ -23,7 +23,7 @@ set $menu dmenu_path | dmenu | xargs swaymsg exec --
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg /usr/share/backgrounds/spacecraft.png fill
 #
 # Example configuration:
 #
@@ -34,13 +34,13 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 ### Idle configuration
 #
 # Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' \
-#               resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
+
+exec swayidle -w \
+    timeout 300 'swaylock -f -c 000000' \
+    timeout 600 'swaymsg "output * dpms off"' \
+         resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f -c 000000'
+
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -218,11 +218,27 @@ bindsym XF86MonBrightnessUp exec light -A 3
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-  status_command i3status
-  font pango:DejaVu Sans Mono, Awesome 12 
+   colors {
+   background #2f343f
+   statusline #2f343f
+   separator #4b5262
+
+   # colour of border, background, and text
+   focused_workspace       #2f343f #bf616a #d8dee8
+   active_workspace        #2f343f #2f343f #d8dee8
+   inactive_workspace      #2f343f #2f343f #d8dee8
+   urgent_workspace       #2f343f #ebcb8b #2f343f
+   }
+   font pango:DejaVu Sans Mono, Awesome 11 
+   status_command i3status
 }
 
 # load Xresouces on sway startup
 exec xrdb ~/.Xresources
+
+#
+# HIDPI
+#
+output eDP-1 scale 1.3
 
 include /etc/sway/config.d/*
